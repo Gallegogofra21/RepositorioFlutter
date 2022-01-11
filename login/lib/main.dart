@@ -65,50 +65,58 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextStyle(
                   color: Colors.white.withOpacity(.5), fontSize: 24.0),
             ),
-            Padding(padding: EdgeInsets.only(top: 200)),
-            OutlinedButton(
-              style: TextButton.styleFrom(
-                primary: const Color(0xFFE62F16),
-                padding: const EdgeInsets.only(
-                    left: 80, right: 80, top: 15, bottom: 15),
-                textStyle:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                backgroundColor: Colors.white,
+            Container(
+              margin: EdgeInsets.only(top: 200),
+              child: OutlinedButton(
+                style: TextButton.styleFrom(
+                  primary: const Color(0xFFE62F16),
+                  padding: const EdgeInsets.only(
+                      left: 80, right: 80, top: 15, bottom: 15),
+                  textStyle:
+                      const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  backgroundColor: Colors.white,
+                ),
+                onPressed: () {},
+                child: const Text('Sign Up'),
               ),
-              onPressed: () {},
-              child: const Text('Sign Up'),
             ),
-            Padding(padding: EdgeInsets.only(top: 20)),
-            Text(
-              'Already have a Path account?',
-              style: TextStyle(
-                  color: Colors.white.withOpacity(.5), fontSize: 16.0),
-            ),
-            Padding(padding: EdgeInsets.only(top: 10)),
-            OutlinedButton(
-              style: TextButton.styleFrom(
-                primary: Colors.white30,
-                padding: const EdgeInsets.only(
-                    left: 90, right: 90, top: 15, bottom: 15),
-                textStyle: const TextStyle(fontSize: 20),
-                side: BorderSide(color: Colors.white30, width: 1),
-              ),
-              onPressed: () {},
-              child: const Text('Log In'),
-            ),
-            Padding(padding: EdgeInsets.only(top: 10)),
-            RichText(
-              text: TextSpan(
-                text: 'By using Path, you agree to Path`s \n ',
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              child: Text(
+                'Already have a Path account?',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(.5), fontSize: 14.0),
-                children: const <TextSpan>[
-                  TextSpan(
-                      text: 'Terms of Use',
-                      style: TextStyle(color: Colors.white, decoration: TextDecoration.underline)),
-                  TextSpan(text: ' and '),
-                  TextSpan(text: 'Privacy Policy', style: TextStyle(color: Colors.white, decoration: TextDecoration.underline))
-                ],
+                    color: Colors.white.withOpacity(.5), fontSize: 16.0),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              child: OutlinedButton(
+                style: TextButton.styleFrom(
+                  primary: Colors.white30,
+                  padding: const EdgeInsets.only(
+                      left: 90, right: 90, top: 15, bottom: 15),
+                  textStyle: const TextStyle(fontSize: 20),
+                  side: BorderSide(color: Colors.white30, width: 1),
+                ),
+                onPressed: () {},
+                child: const Text('Log In'),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              child: RichText(
+                text: TextSpan(
+                  text: 'By using Path, you agree to Path`s \n ',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(.5), fontSize: 14.0),
+                  children: const <TextSpan>[
+                    TextSpan(
+                        text: 'Terms of Use',
+                        style: TextStyle(color: Colors.white, decoration: TextDecoration.underline)),
+                    TextSpan(text: ' and '),
+                    TextSpan(text: 'Privacy Policy', style: TextStyle(color: Colors.white, decoration: TextDecoration.underline))
+                  ],
+                ),
               ),
             )
           ],
