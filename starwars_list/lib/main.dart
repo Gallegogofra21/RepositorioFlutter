@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:starwars_list/models/planet_response.dart';
@@ -13,11 +12,13 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  static const appTittle = 'Starwars';
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: appTittle,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: appTittle),
     );
   }
 }
@@ -73,39 +74,51 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-        body: Column(children: <Widget>[
-      Container(
-          margin: const EdgeInsets.symmetric(vertical: 20.0),
-          height: 240,
-          child: FutureBuilder<List<People>>(
-            future: personajes,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return _personajesList(snapshot.data!);
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
+    return MaterialApp(
+        home: DefaultTabController(
+            length: 2,
+            child: Scaffold(
+                appBar: AppBar(
+                  bottom: const TabBar(
+                    tabs: [
+                      Tab(icon: Icon(Icons.person)),
+                      Tab(icon: Icon(Icons.language)),
+                    ],
+                  ),
+                  title: const Text('Starwars'),
+                ),
+                body: TabBarView(children: <Widget>[
+                  Container(
+                      margin: EdgeInsets.symmetric(vertical: 180.0),
+                      height: 240,
+                      child: FutureBuilder<List<People>>(
+                        future: personajes,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return _personajesList(snapshot.data!);
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
 
-              return const CircularProgressIndicator();
-            },
-          )),
-      Container(
-          margin: const EdgeInsets.symmetric(vertical: 20.0),
-          height: 200,
-          child: FutureBuilder<List<Planet>>(
-            future: planetas,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return _planetsList(snapshot.data!);
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
+                          return const CircularProgressIndicator();
+                        },
+                      )),
+                  Container(
+                      margin: const EdgeInsets.symmetric(vertical: 180.0),
+                      height: 200,
+                      child: FutureBuilder<List<Planet>>(
+                        future: planetas,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return _planetsList(snapshot.data!);
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
 
-              return const CircularProgressIndicator();
-            },
-          ))
-    ]));
+                          return const CircularProgressIndicator();
+                        },
+                      )),
+                ]))));
   }
 
   Future<List<People>> fetchPersonajes() async {
@@ -133,26 +146,27 @@ class _MyHomePageState extends State<MyHomePage> {
     return Container(
       width: 160,
       child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30)),
-          margin: EdgeInsets.all(15),
-          elevation: 10,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-            child: Column(
-              children: <Widget>[
-                Image(image: NetworkImage('https://starwars-visualguide.com/assets/img/characters/${numFoto}.jpg')),
-                Text(people.name)
-              ],
-            ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        margin: EdgeInsets.all(15),
+        elevation: 10,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(30),
+          child: Column(
+            children: <Widget>[
+              Image(
+                  image: NetworkImage(
+                      'https://starwars-visualguide.com/assets/img/characters/${numFoto}.jpg')),
+              Text(people.name)
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 
   Future<List<Planet>> fetchPlanetas() async {
     final response = await http.get(Uri.parse('https://swapi.dev/api/planets'));
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       return PlanetResponse.fromJson(jsonDecode(response.body)).results;
     } else {
       throw Exception('Failed to load planets');
@@ -175,20 +189,21 @@ class _MyHomePageState extends State<MyHomePage> {
     return Container(
       width: 160,
       child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30)),
-          margin: EdgeInsets.all(15),
-          elevation: 10,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-            child: Column(
-              children: <Widget>[
-                Image(image: NetworkImage('https://starwars-visualguide.com/assets/img/planets/${numFoto}.jpg')),
-                Text(planet.name)
-              ],
-            ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        margin: EdgeInsets.all(15),
+        elevation: 10,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(30),
+          child: Column(
+            children: <Widget>[
+              Image(
+                  image: NetworkImage(
+                      'https://starwars-visualguide.com/assets/img/planets/${numFoto}.jpg')),
+              Text(planet.name)
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }
