@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   bottom: const TabBar(
                     tabs: [
                       Tab(icon: Icon(Icons.person)),
-                      Tab(icon: Icon(Icons.language)),
+                      Tab(icon: Icon(Icons.public)),
                     ],
                   ),
                   title: const Text('Starwars'),
@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         },
                       )),
                   Container(
-                      margin: const EdgeInsets.symmetric(vertical: 180.0),
+                      margin: const EdgeInsets.symmetric(vertical: 210.0),
                       height: 200,
                       child: FutureBuilder<List<Planet>>(
                         future: planetas,
