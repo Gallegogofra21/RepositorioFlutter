@@ -50,11 +50,11 @@ class PlayerHomePage extends StatefulWidget {
 }
 
 class _PlayerPage extends State<PlayerHomePage> {
-  late Future<List<Player>> jugadores;
+  late Future<List<Agent>> agentes;
 
   @override
   void initState() {
-    jugadores = fetchJugadores();
+    agentes = fetchAgentes();
     
     super.initState();
   }
@@ -66,8 +66,8 @@ class _PlayerPage extends State<PlayerHomePage> {
       body: Container(
                       margin: EdgeInsets.symmetric(vertical: 180.0),
                       height: 240,
-                      child: FutureBuilder<List<Player>>(
-                        future: jugadores,
+                      child: FutureBuilder<List<Agent>>(
+                        future: agentes,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return _jugadoresList(snapshot.data!);
@@ -81,16 +81,16 @@ class _PlayerPage extends State<PlayerHomePage> {
     );
   }
 
-  Future<List<Player>> fetchJugadores() async {
+  Future<List<Agent>> fetchAgentes() async {
     final response = await http.get(Uri.parse('https://swapi.dev/api/people'));
     if (response.statusCode == 200) {
-      return PlayersResponse.fromJson(jsonDecode(response.body)).results;
+      return AgentResponse.fromJson(jsonDecode(response.body)).results;
     } else {
       throw Exception('Failed to load people');
     }
   }
 
-  Widget _jugadoresList(List<Player> jugadoresList) {
+  Widget _jugadoresList(List<Agent> jugadoresList) {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemCount: jugadoresList.length,
@@ -100,7 +100,7 @@ class _PlayerPage extends State<PlayerHomePage> {
     );
   }
 
-  Widget _jugadoresItem(Player player) {
+  Widget _jugadoresItem(Agent agent) {
     //List<String> urlFoto = player.url.split('/');
     //String numFoto = urlFoto[5];
     return Container(
@@ -116,7 +116,7 @@ class _PlayerPage extends State<PlayerHomePage> {
               /*Image(
                   image: NetworkImage(
                       'https://starwars-visualguide.com/assets/img/characters/${numFoto}.jpg')),*/
-              Text(player.firstName)
+              Text(agent.displayName)
             ],
           ),
         ),
