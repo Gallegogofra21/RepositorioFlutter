@@ -34,9 +34,9 @@ class Player {
   late final String firstName;
   late final String lastName;
   late final String position;
-  late final int heightFeet;
-  late final int heightInches;
-  late final int weightPounds;
+  late final int? heightFeet;
+  late final int? heightInches;
+  late final int? weightPounds;
   late final Team team;
   
   Player.fromJson(Map<String, dynamic> json){
