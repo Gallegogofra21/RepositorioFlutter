@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:moviedb_app/models/movie_newest.dart';
 
 void main() {
   runApp(const HomePage());
@@ -52,8 +53,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  late Future<List<Movie>> movies;
+
   @override
   void initState() {
+    movies = fetchMovies();
     super.initState();
   }
 
@@ -128,4 +133,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ]),
     );
   }
+}
+
+Future<List<Movie>> fetchMovies() async {
+  final response
 }
