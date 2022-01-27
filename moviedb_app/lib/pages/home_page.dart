@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-
 void main() {
   runApp(const HomePage());
 }
@@ -53,11 +52,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
-
   @override
   void initState() {
-    
     super.initState();
   }
 
@@ -70,41 +66,66 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      body: Container(
-        child: Container(
-          child: Row(
-            children: <Widget>[
-              Container(
-            width: 60.0,
-            height: 60.0,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(8.0)),
-              color: Colors.redAccent,
+      body: Column(children: <Widget>[
+        Container(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, top: 10),
+            child: Row(
+              children: <Widget>[
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(120.0),
+                    child: const Image(
+                      image: AssetImage('assets/images/Foto1.jpg'),
+                      width: 50,
+                      height: 50.0,
+                    )),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Container(
+                    child: const Text(
+                      'Erik Howell',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 170.0),
+                  child: Container(
+                      child: InkWell(
+                          onTap: () {
+                            debugPrint('Tapped');
+                          },
+                          child: SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: Icon(
+                              Icons.cast,
+                              color: Colors.blue[300],
+                            ),
+                          ))),
+                ),
+              ],
             ),
-              child: const Image(image: AssetImage('assets/images/Foto1.jpg'),
-              width: 60,
-              height: 60.0,
-              )
-              ),
-              Container(
-                child: const Text('Erik Howell',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-              )],
           ),
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.only(right: 150.0, top: 40),
+          child: Container(
+            width: 200,
+            child: const Text(
+              'Movie, Series, TV Shows...',
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 280, top: 20),
+          child: Container(
+            child: const Text('Newest', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
+        ),
+        
+      ]),
     );
   }
-
-  
-
-  
-
-  
-
-  
- 
-
-  
 }
-
