@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:moviedb_app/models/movie_newest.dart';
 
 void main() {
@@ -53,7 +54,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   late Future<List<Movie>> movies;
 
   @override
@@ -127,8 +127,26 @@ class _MyHomePageState extends State<MyHomePage> {
         Padding(
           padding: const EdgeInsets.only(right: 280, top: 20),
           child: Container(
-            child: const Text('Newest', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
+              child: const Text(
+            'Newest',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          )),
         ),
+        Container(
+            margin: EdgeInsets.symmetric(vertical: 180),
+            height: 240,
+            child: FutureBuilder<List<Movie>>(
+              future: movies,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return _moviesList(snapshot.data!);
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
+                return const CircularProgressIndicator();
+              },
+            ),
+          )
         
       ]),
     );
@@ -136,5 +154,43 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 Future<List<Movie>> fetchMovies() async {
-  final response
+  final response = await http.get(Uri.parse(
+      'https://api.themoviedb.org/3/movie/popular?api_key=715181cb9360e096ec97787869297df1&language=en-US&page=1'));
+  if (response.statusCode == 200) {
+    return MovieResponse.fromJson(jsonDecode(response.body)).results;
+  } else {
+    throw Exception('Failed to load movies');
+  }
+}
+
+Widget _moviesList(List<Movie> moviesList) {
+  return ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: moviesList.length,
+    itemBuilder: (context, index) {
+      return _movieItem(moviesList.elementAt(index));
+    },
+  );
+}
+
+Widget _movieItem(Movie movie) {
+  return Container(
+    width: 160,
+    child: Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      margin: EdgeInsets.all(15),
+      elevation: 10,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(30),
+        child: Column(
+          children: <Widget>[
+            Image(
+                image: NetworkImage(
+                    'https://www.themoviedb.org/t/p/original/${movie.posterPath}')),
+            Text(movie.title)
+          ],
+        ),
+      ),
+    ),
+  );
 }

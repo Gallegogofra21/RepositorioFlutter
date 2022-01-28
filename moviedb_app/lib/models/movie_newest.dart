@@ -1,5 +1,5 @@
-class AutoGenerate {
-  AutoGenerate({
+class MovieResponse {
+  MovieResponse({
     required this.page,
     required this.results,
     required this.totalPages,
@@ -10,7 +10,7 @@ class AutoGenerate {
   late final int totalPages;
   late final int totalResults;
   
-  AutoGenerate.fromJson(Map<String, dynamic> json){
+  MovieResponse.fromJson(Map<String, dynamic> json){
     page = json['page'];
     results = List.from(json['results']).map((e)=>Movie.fromJson(e)).toList();
     totalPages = json['total_pages'];
