@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(children: <Widget>[
         Container(
           child: Padding(
-            padding: const EdgeInsets.only(left: 20.0, top: 10),
+            padding: const EdgeInsets.only(left: 20.0, top: 80),
             child: Row(
               children: <Widget>[
                 ClipRRect(
@@ -133,21 +133,20 @@ class _MyHomePageState extends State<MyHomePage> {
           )),
         ),
         Container(
-            margin: EdgeInsets.symmetric(vertical: 180),
-            height: 240,
-            child: FutureBuilder<List<Movie>>(
-              future: movies,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _moviesList(snapshot.data!);
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-                return const CircularProgressIndicator();
-              },
-            ),
-          )
-        
+          margin: EdgeInsets.symmetric(vertical: 20),
+          height: 270,
+          child: FutureBuilder<List<Movie>>(
+            future: movies,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return _moviesList(snapshot.data!);
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+              return const CircularProgressIndicator();
+            },
+          ),
+        )
       ]),
     );
   }
@@ -178,16 +177,24 @@ Widget _movieItem(Movie movie) {
     width: 160,
     child: Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      margin: EdgeInsets.all(15),
+      margin: EdgeInsets.only(left: 15, right: 15, bottom: 15),
       elevation: 10,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(30),
         child: Column(
           children: <Widget>[
-            Image(
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Image(
                 image: NetworkImage(
-                    'https://www.themoviedb.org/t/p/original/${movie.posterPath}')),
-            Text(movie.title)
+                    'https://www.themoviedb.org/t/p/original/${movie.posterPath}'),
+              ),
+            ),
+            Text(
+              movie.title,
+              style: TextStyle(fontSize: 15),
+              textAlign: TextAlign.center,
+            )
           ],
         ),
       ),
