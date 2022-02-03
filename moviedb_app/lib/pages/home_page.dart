@@ -194,6 +194,9 @@ Widget _movieItem(Movie movie) {
               movie.title,
               style: TextStyle(fontSize: 15),
               textAlign: TextAlign.center,
+            ),
+            Container(
+              child: Icon(Icons.star, color: Colors.yellow[400],),
             )
           ],
         ),
