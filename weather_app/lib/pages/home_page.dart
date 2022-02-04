@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:weather_app/model/earth_weather_response.dart';
+
 import 'package:weather_app/model/weather_response.dart';
 
 import 'package:http/http.dart' as http;
@@ -15,12 +15,12 @@ class HomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<HomePage> {
   late Future<WeatherResponse> location;
-  late Future<Current> dt;
+  late Future<int> hoy;
 
   @override
   void initState() {
     location = fetchLocation();
-    dt = fetchDate();
+    hoy = fetchDate();
     super.initState();
   }
 
@@ -44,8 +44,8 @@ class _MyHomePageState extends State<HomePage> {
                 },
               ))),
           Container(
-            child: FutureBuilder<Current>(
-              future: dt,
+            child: FutureBuilder<int>(
+              future: hoy,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return _getDateTime(snapshot.data!);
@@ -79,17 +79,17 @@ Widget _getLocation(WeatherResponse weatherResponse) {
   );
 }
 
-Future<Current> fetchDate() async {
+Future<int> fetchDate() async {
   final response = await http.get(Uri.parse(
       'https://api.openweathermap.org/data/2.5/onecall?lat=37.3789818&lon=-6.0174968&exclude=minutely&appid=9f277403fbc997f9a305df9b742acda7'));
   if (response.statusCode == 200) {
-    return Current.fromJson(jsonDecode(response.body));
+    return WeatherResponse.fromJson(jsonDecode(response.body)).dt;
   } else {
     throw Exception('Failed to load dt');
   }
 }
 
-Widget _getDateTime(Current current) {
-  DateTime.fromMillisecondsSinceEpoch(current.dt * 1000);
-  return Text('${current.dt}');
+Widget _getDateTime(int hoy) {
+  DateTime.fromMillisecondsSinceEpoch(hoy * 1000);
+  return Text(hoy.toString(), style: TextStyle(fontSize: 20),);
 }
