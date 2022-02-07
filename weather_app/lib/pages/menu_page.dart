@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/pages/home_empty_page.dart';
 import 'package:weather_app/pages/home_page.dart';
 
 void main() => runApp(const MenuPage());
@@ -30,10 +31,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
+    HomeEmptyPage(),
+    
     Text(
       'Index 2: School',
       style: optionStyle,
@@ -73,7 +72,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue[900],
+        selectedItemColor: Colors.white,
         onTap: _onItemTapped,
       ),
     );

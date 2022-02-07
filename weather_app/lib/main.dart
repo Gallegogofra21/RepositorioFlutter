@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/pages/home_empty_page.dart';
 
 import 'package:weather_app/pages/home_page.dart';
 import 'package:weather_app/pages/menu_page.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/menu': (context) => const MenuPage(),
         '/home': (context) => const HomePage(),
+        '/home_empty': (context) => const HomeEmptyPage(),
       },
       
     );

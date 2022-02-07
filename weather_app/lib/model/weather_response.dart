@@ -68,10 +68,10 @@ class Coord {
     required this.lon,
     required this.lat,
   });
-  late final dynamic lon;
-  late final dynamic lat;
+  late final double lon;
+  late final double lat;
   
-  Coord.fromJson(Map<dynamic, dynamic> json){
+  Coord.fromJson(Map<String, dynamic> json){
     lon = json['lon'];
     lat = json['lat'];
   }
