@@ -23,7 +23,7 @@ class _MyHomePageState extends State<HomePage> {
   late Future<OneCallResponse> temp;
   late Future<OneCallResponse> date;
   late Future<OneCallResponse> main;
-  late Future<OneCallResponse> hourly;
+  late Future<List<Hourly>> hourly;
 
   @override
   void initState() {
@@ -31,7 +31,7 @@ class _MyHomePageState extends State<HomePage> {
     temp = _fetchWeather();
     date = _fetchWeather();
     main = _fetchWeather();
-    hourly = _fetchWeather();
+    hourly = fetchHourly();
     super.initState();
   }
 
@@ -105,11 +105,11 @@ class _MyHomePageState extends State<HomePage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 140.0),
-                child: FutureBuilder<OneCallResponse>(
+                child: FutureBuilder<List<Hourly>>(
                     future: hourly,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return _getHourly(snapshot.data!);
+                        return _HoursList(snapshot.data!);
                       } else if (snapshot.hasError) {
                         return Text('${snapshot.error}');
                       }
@@ -161,7 +161,8 @@ Widget _getDate(OneCallResponse weather) {
 }
 
 Widget _getTemp(OneCallResponse weather) {
-  return Text(weather.current.temp.toString() + 'º',
+  var tempD = weather.current.temp.toInt();
+  return Text(tempD.toString() + 'º',
       style: TextStyle(color: Colors.white, fontSize: 40));
 }
 
@@ -174,4 +175,54 @@ Widget _getMain(OneCallResponse weather) {
 
 Widget _getHourly(OneCallResponse weather) {
   return Text(weather.hourly[0].dt.toString());
+}
+
+Future<List<Hourly>> fetchHourly() async {
+  String apiKey = 'cd7594b90e704bf350b33313dd7e6ff2';
+  String lat = '37.36826';
+  String lon = '-5.99629';
+  final response = await http.get(Uri.parse(
+      'https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&lang=es&units=metric'));
+  if (response.statusCode == 200) {
+    return OneCallResponse.fromJson(jsonDecode(response.body)).hourly;
+  } else {
+    throw Exception('Failed to load people');
+  }
+}
+
+Widget _HoursList(List<Hourly> hoursList) {
+  return SizedBox(
+      height: 200,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: hoursList.length,
+        itemBuilder: (context, index) {
+          return _HoursItem(hoursList.elementAt(index));
+        },
+      ));
+}
+
+Widget _HoursItem(Hourly hourly) {
+  var date = DateTime.fromMillisecondsSinceEpoch(hourly.dt.toInt() * 1000);
+  var d24 = DateFormat('hh:mm').format(date);
+  return Column(
+    children: [
+      Container(
+        height: 140,
+        width: 250,
+        child: Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          margin: EdgeInsets.all(5),
+          elevation: 10,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30),
+            child: Column(
+              children: <Widget>[Text(d24.toString())],
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
 }
