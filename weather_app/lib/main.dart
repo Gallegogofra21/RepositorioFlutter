@@ -24,9 +24,6 @@ class MyApp extends StatelessWidget {
         '/home_empty': (context) => const HomeEmptyPage(),
         '/city': (context) => const CityPage(),
       },
-      
     );
   }
 }
-
-

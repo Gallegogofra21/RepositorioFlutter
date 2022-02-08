@@ -145,13 +145,13 @@ class _MyHomePageState extends State<HomePage> {
                     }
                     return const CircularProgressIndicator();
                   }),
-                  Divider(
-            height: 10,
-            thickness: 1,
-            indent: 10,
-            endIndent: 10,
-            color: Colors.grey.shade900.withOpacity(0.3),
-          ),
+              Divider(
+                height: 10,
+                thickness: 1,
+                indent: 10,
+                endIndent: 10,
+                color: Colors.grey.shade900.withOpacity(0.3),
+              ),
               FutureBuilder<List<Daily>>(
                 future: daily,
                 builder: (context, snapshot) {
@@ -224,8 +224,9 @@ Widget _getIcon(OneCallResponse weather) {
   var icon = weather.current.weather[0].icon.toString();
   return Container(
       child: Image(
-          image:
-              NetworkImage('http://openweathermap.org/img/wn/${icon}@2x.png')));
+    image: AssetImage('assets/images/${icon}.png'),
+    width: 90,
+  ));
 }
 
 Widget _getHourly(OneCallResponse weather) {
@@ -277,10 +278,9 @@ Widget _HoursItem(Hourly hourly) {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Container(
-              width: 60,
+              width: 40,
               child: Image(
-                image: NetworkImage(
-                    'http://openweathermap.org/img/wn/${icon}@2x.png'),
+                image: AssetImage('assets/images/${icon}.png'),
               ),
             ),
           ),
@@ -343,10 +343,9 @@ Widget _DailyItem(Daily daily) {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Container(
-              width: 60,
+              width: 40,
               child: Image(
-                image: NetworkImage(
-                    'http://openweathermap.org/img/wn/${icon}@2x.png'),
+                image: AssetImage('assets/images/${icon}.png'),
               ),
             ),
           ),
