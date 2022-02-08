@@ -351,6 +351,8 @@ class Temp {
     _data['morn'] = morn;
     return _data;
   }
+
+  toInt() {}
 }
 
 class FeelsLike {

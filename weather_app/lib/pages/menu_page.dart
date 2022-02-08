@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/pages/city_page.dart';
 import 'package:weather_app/pages/home_empty_page.dart';
 import 'package:weather_app/pages/home_page.dart';
 
@@ -31,12 +32,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
+    CityPage(),
     HomeEmptyPage(),
-    
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
   ];
 
   void _onItemTapped(int index) {

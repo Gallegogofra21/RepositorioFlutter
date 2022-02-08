@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_new
+
 import 'dart:convert';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -24,6 +26,8 @@ class _MyHomePageState extends State<HomePage> {
   late Future<OneCallResponse> date;
   late Future<OneCallResponse> main;
   late Future<List<Hourly>> hourly;
+  late Future<List<Daily>> daily;
+  late Future<OneCallResponse> icon;
 
   @override
   void initState() {
@@ -32,6 +36,8 @@ class _MyHomePageState extends State<HomePage> {
     date = _fetchWeather();
     main = _fetchWeather();
     hourly = fetchHourly();
+    daily = fetchDaily();
+    icon = _fetchWeather();
     super.initState();
   }
 
@@ -52,7 +58,7 @@ class _MyHomePageState extends State<HomePage> {
           body: Column(
             children: <Widget>[
               Padding(
-                  padding: const EdgeInsets.only(right: 100, top: 80.0),
+                  padding: const EdgeInsets.only(right: 300, top: 80.0),
                   child: FutureBuilder<WeatherResponse>(
                     future: location,
                     builder: (context, snapshot) {
@@ -65,7 +71,7 @@ class _MyHomePageState extends State<HomePage> {
                     },
                   )),
               Padding(
-                padding: const EdgeInsets.only(right: 70),
+                padding: const EdgeInsets.only(right: 270),
                 child: FutureBuilder<OneCallResponse>(
                     future: date,
                     builder: (context, snapshot) {
@@ -77,44 +83,85 @@ class _MyHomePageState extends State<HomePage> {
                       return const CircularProgressIndicator();
                     }),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 140.0, top: 150),
-                child: FutureBuilder<OneCallResponse>(
-                    future: temp,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return _getTemp(snapshot.data!);
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      }
-                      return const CircularProgressIndicator();
-                    }),
+              SizedBox(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.cyan.shade900.withOpacity(0.3),
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(10))),
+                  onPressed: () {},
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 38.0),
+                        child: FutureBuilder<OneCallResponse>(
+                            future: icon,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return _getIcon(snapshot.data!);
+                              } else if (snapshot.hasError) {
+                                return Text('${snapshot.error}');
+                              }
+                              return const CircularProgressIndicator();
+                            }),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, top: 30),
+                        child: FutureBuilder<OneCallResponse>(
+                            future: temp,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return _getTemp(snapshot.data!);
+                              } else if (snapshot.hasError) {
+                                return Text('${snapshot.error}');
+                              }
+                              return const CircularProgressIndicator();
+                            }),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(),
+                        child: FutureBuilder<OneCallResponse>(
+                            future: main,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return _getMain(snapshot.data!);
+                              } else if (snapshot.hasError) {
+                                return Text('${snapshot.error}');
+                              }
+                              return const CircularProgressIndicator();
+                            }),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 140.0),
-                child: FutureBuilder<OneCallResponse>(
-                    future: main,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return _getMain(snapshot.data!);
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      }
-                      return const CircularProgressIndicator();
-                    }),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 140.0),
-                child: FutureBuilder<List<Hourly>>(
-                    future: hourly,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return _HoursList(snapshot.data!);
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      }
-                      return const CircularProgressIndicator();
-                    }),
+              FutureBuilder<List<Hourly>>(
+                  future: hourly,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return _HoursList(snapshot.data!);
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+                    return const CircularProgressIndicator();
+                  }),
+                  Divider(
+            height: 10,
+            thickness: 1,
+            indent: 10,
+            endIndent: 10,
+            color: Colors.grey.shade900.withOpacity(0.3),
+          ),
+              FutureBuilder<List<Daily>>(
+                future: daily,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return _DailyList(snapshot.data!);
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                  return const CircularProgressIndicator();
+                },
               ),
             ],
           ),
@@ -173,6 +220,14 @@ Widget _getMain(OneCallResponse weather) {
   );
 }
 
+Widget _getIcon(OneCallResponse weather) {
+  var icon = weather.current.weather[0].icon.toString();
+  return Container(
+      child: Image(
+          image:
+              NetworkImage('http://openweathermap.org/img/wn/${icon}@2x.png')));
+}
+
 Widget _getHourly(OneCallResponse weather) {
   return Text(weather.hourly[0].dt.toString());
 }
@@ -192,7 +247,7 @@ Future<List<Hourly>> fetchHourly() async {
 
 Widget _HoursList(List<Hourly> hoursList) {
   return SizedBox(
-      height: 200,
+      height: 170,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: hoursList.length,
@@ -204,24 +259,105 @@ Widget _HoursList(List<Hourly> hoursList) {
 
 Widget _HoursItem(Hourly hourly) {
   var date = DateTime.fromMillisecondsSinceEpoch(hourly.dt.toInt() * 1000);
-  var d24 = DateFormat('hh:mm').format(date);
+  var d24 = DateFormat('hh:mm a').format(date);
+  var tempD = hourly.temp.toInt();
+  var icon = hourly.weather[0].icon;
   return Column(
     children: [
-      Container(
-        height: 140,
-        width: 250,
-        child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-          margin: EdgeInsets.all(5),
-          elevation: 10,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-            child: Column(
-              children: <Widget>[Text(d24.toString())],
+      SizedBox(
+          height: 20,
+          width: 80,
+          child: Container(
+              decoration: const BoxDecoration(
+            color: Colors.transparent,
+          ))),
+      Column(
+        children: <Widget>[
+          Text(d24.toString(), style: TextStyle(color: Colors.white)),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Container(
+              width: 60,
+              child: Image(
+                image: NetworkImage(
+                    'http://openweathermap.org/img/wn/${icon}@2x.png'),
+              ),
             ),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text(
+              tempD.toString() + "º",
+              style: TextStyle(color: Colors.white),
+            ),
+          )
+        ],
+      ),
+    ],
+  );
+}
+
+Future<List<Daily>> fetchDaily() async {
+  String apiKey = 'cd7594b90e704bf350b33313dd7e6ff2';
+  String lat = '37.36826';
+  String lon = '-5.99629';
+  final response = await http.get(Uri.parse(
+      'https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&lang=es&units=metric'));
+  if (response.statusCode == 200) {
+    return OneCallResponse.fromJson(jsonDecode(response.body)).daily;
+  } else {
+    throw Exception('Failed to load daily');
+  }
+}
+
+Widget _DailyList(List<Daily> dailyList) {
+  return SizedBox(
+      height: 170,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: dailyList.length,
+        itemBuilder: (context, index) {
+          return _DailyItem(dailyList.elementAt(index));
+        },
+      ));
+}
+
+Widget _DailyItem(Daily daily) {
+  var date = DateTime.fromMillisecondsSinceEpoch(daily.dt.toInt() * 1000);
+  initializeDateFormatting();
+  var d24 = DateFormat('EEE', 'ES_es').format(date).toUpperCase();
+  var tempD = daily.temp.day.toInt();
+  var icon = daily.weather[0].icon;
+  return Column(
+    children: [
+      SizedBox(
+          width: 80,
+          height: 40,
+          child: Container(
+              decoration: const BoxDecoration(
+            color: Colors.transparent,
+          ))),
+      Column(
+        children: <Widget>[
+          Text(d24.toString(), style: TextStyle(color: Colors.white)),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Container(
+              width: 60,
+              child: Image(
+                image: NetworkImage(
+                    'http://openweathermap.org/img/wn/${icon}@2x.png'),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text(
+              tempD.toString() + "º",
+              style: TextStyle(color: Colors.white),
+            ),
+          )
+        ],
       ),
     ],
   );
