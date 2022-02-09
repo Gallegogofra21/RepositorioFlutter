@@ -22,6 +22,7 @@ class _MyCityPageState extends State<CityPage> {
   late Future<OneCallResponse> main;
   late Future<WeatherResponse> tempMax;
   late Future<WeatherResponse> tempMin;
+  late Future<OneCallResponse> date;
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _MyCityPageState extends State<CityPage> {
     main = _fetchWeather();
     tempMax = fetchLocation();
     tempMin = fetchLocation();
+    date = _fetchWeather();
     super.initState();
   }
 
@@ -68,7 +70,7 @@ class _MyCityPageState extends State<CityPage> {
                     onPressed: () {},
                     child: Column(children: <Widget>[
                       Row(
-                        children: [
+                        children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.only(top: 15.0),
                             child: FutureBuilder<WeatherResponse>(
@@ -84,7 +86,7 @@ class _MyCityPageState extends State<CityPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 228.0, top: 15),
+                            padding: const EdgeInsets.only(top: 15),
                             child: FutureBuilder<OneCallResponse>(
                                 future: temp,
                                 builder: (context, snapshot) {
@@ -116,28 +118,34 @@ class _MyCityPageState extends State<CityPage> {
                                   }),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 150.0, bottom: 20),
-                              child: FutureBuilder<WeatherResponse>(future: tempMax,
-                              builder: (context, snapshot) {
-                                if(snapshot.hasData) {
-                                  return _getTempMax(snapshot.data!);
-                                } else if(snapshot.hasError) {
-                                  return Text('${snapshot.error}');
-                                }
-                                return const CircularProgressIndicator();
-                              },),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 20.0, left: 10),
-                              child: FutureBuilder<WeatherResponse>(future: tempMax,
+                              padding: const EdgeInsets.only(
+                                  left: 150.0, bottom: 20),
+                              child: FutureBuilder<WeatherResponse>(
+                                future: tempMax,
                                 builder: (context, snapshot) {
-                                  if(snapshot.hasData) {
-                                    return _getTempMin(snapshot.data!);
-                                  } else if(snapshot.hasError) {
+                                  if (snapshot.hasData) {
+                                    return _getTempMax(snapshot.data!);
+                                  } else if (snapshot.hasError) {
                                     return Text('${snapshot.error}');
                                   }
                                   return const CircularProgressIndicator();
-                                },),
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 20.0, left: 10),
+                              child: FutureBuilder<WeatherResponse>(
+                                future: tempMax,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return _getTempMin(snapshot.data!);
+                                  } else if (snapshot.hasError) {
+                                    return Text('${snapshot.error}');
+                                  }
+                                  return const CircularProgressIndicator();
+                                },
+                              ),
                             ),
                           ],
                         ),
@@ -180,6 +188,16 @@ Future<OneCallResponse> _fetchWeather() async {
   return OneCallResponse.fromJson(jsonData);
 }
 
+Widget _getDate(OneCallResponse weather) {
+  var date =
+      DateTime.fromMillisecondsSinceEpoch(weather.current.dt.toInt() * 1000);
+  var d24 = DateFormat('MM/dd/yyyy').format(date);
+  return Text(
+    d24.toString(),
+    style: TextStyle(color: Colors.grey.shade400, fontSize: 16),
+  );
+}
+
 Widget _getTemp(OneCallResponse weather) {
   var tempD = weather.current.temp.toInt();
   return Text(tempD.toString() + 'º',
@@ -193,14 +211,20 @@ Widget _getMain(OneCallResponse weather) {
   );
 }
 
-Widget _getTempMax (WeatherResponse weather) {
+Widget _getTempMax(WeatherResponse weather) {
   var tempC = weather.main.tempMax - 273.15;
   var tempD = tempC.toInt();
-  return Text("Max."+tempD.toString() + 'º', style: TextStyle(color: Colors.grey, fontSize: 18), );
+  return Text(
+    "Max." + tempD.toString() + 'º',
+    style: TextStyle(color: Colors.grey, fontSize: 18),
+  );
 }
 
-Widget _getTempMin (WeatherResponse weather) {
+Widget _getTempMin(WeatherResponse weather) {
   var tempC = weather.main.tempMin - 273.15;
   var tempD = tempC.toInt();
-  return Text("Min."+tempD.toString() + "º", style: TextStyle(color: Colors.grey, fontSize: 18),);
+  return Text(
+    "Min." + tempD.toString() + "º",
+    style: TextStyle(color: Colors.grey, fontSize: 18),
+  );
 }

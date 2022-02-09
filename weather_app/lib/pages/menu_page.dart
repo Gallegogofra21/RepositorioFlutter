@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/pages/city_page.dart';
+import 'package:weather_app/pages/details_page.dart';
 import 'package:weather_app/pages/home_empty_page.dart';
 import 'package:weather_app/pages/home_page.dart';
 import 'package:weather_app/pages/map.dart';
@@ -33,7 +34,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    CityPage(),
+    DetailsPage(),
     MapApp()
   ];
 
@@ -46,7 +47,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -60,10 +60,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             label: 'Earth',
           ),
           BottomNavigationBarItem(
-            icon: Image(image: AssetImage('assets/images/planeta.png'),
-            width: 20,),
-            label: 'Planet',
+            icon: Image(
+              image: AssetImage('assets/images/planeta.png'),
+              width: 20,
             ),
+            label: 'Planet',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.location_city),
             label: 'City',

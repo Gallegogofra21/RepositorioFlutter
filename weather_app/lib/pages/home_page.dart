@@ -83,57 +83,48 @@ class _MyHomePageState extends State<HomePage> {
                       return const CircularProgressIndicator();
                     }),
               ),
-              SizedBox(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.cyan.shade900.withOpacity(0.3),
-                      shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(10))),
-                  onPressed: () {},
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 38.0),
-                        child: FutureBuilder<OneCallResponse>(
-                            future: icon,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return _getIcon(snapshot.data!);
-                              } else if (snapshot.hasError) {
-                                return Text('${snapshot.error}');
-                              }
-                              return const CircularProgressIndicator();
-                            }),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, top: 30),
-                        child: FutureBuilder<OneCallResponse>(
-                            future: temp,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return _getTemp(snapshot.data!);
-                              } else if (snapshot.hasError) {
-                                return Text('${snapshot.error}');
-                              }
-                              return const CircularProgressIndicator();
-                            }),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(),
-                        child: FutureBuilder<OneCallResponse>(
-                            future: main,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return _getMain(snapshot.data!);
-                              } else if (snapshot.hasError) {
-                                return Text('${snapshot.error}');
-                              }
-                              return const CircularProgressIndicator();
-                            }),
-                      ),
-                    ],
+              Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 38.0),
+                    child: FutureBuilder<OneCallResponse>(
+                        future: icon,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return _getIcon(snapshot.data!);
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
+                          return const CircularProgressIndicator();
+                        }),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, top: 30),
+                    child: FutureBuilder<OneCallResponse>(
+                        future: temp,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return _getTemp(snapshot.data!);
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
+                          return const CircularProgressIndicator();
+                        }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(),
+                    child: FutureBuilder<OneCallResponse>(
+                        future: main,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return _getMain(snapshot.data!);
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
+                          return const CircularProgressIndicator();
+                        }),
+                  ),
+                ],
               ),
               FutureBuilder<List<Hourly>>(
                   future: hourly,
