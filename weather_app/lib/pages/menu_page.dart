@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/pages/city_page.dart';
 import 'package:weather_app/pages/details_page.dart';
 import 'package:weather_app/pages/home_empty_page.dart';
 import 'package:weather_app/pages/home_page.dart';
