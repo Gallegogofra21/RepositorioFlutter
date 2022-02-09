@@ -3,6 +3,7 @@ import 'package:weather_app/pages/city_page.dart';
 import 'package:weather_app/pages/home_empty_page.dart';
 
 import 'package:weather_app/pages/home_page.dart';
+import 'package:weather_app/pages/map.dart';
 import 'package:weather_app/pages/menu_page.dart';
 
 void main() {
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(),
         '/home_empty': (context) => const HomeEmptyPage(),
         '/city': (context) => const CityPage(),
+        '/map': (context) => const MapApp()
       },
     );
   }

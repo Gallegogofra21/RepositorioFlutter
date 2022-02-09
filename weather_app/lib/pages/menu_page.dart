@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_app/pages/city_page.dart';
 import 'package:weather_app/pages/home_empty_page.dart';
 import 'package:weather_app/pages/home_page.dart';
+import 'package:weather_app/pages/map.dart';
 
 void main() => runApp(const MenuPage());
 
@@ -33,7 +34,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     CityPage(),
-    HomeEmptyPage(),
+    MapApp()
   ];
 
   void _onItemTapped(int index) {
