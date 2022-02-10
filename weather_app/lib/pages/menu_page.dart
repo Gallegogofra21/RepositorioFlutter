@@ -34,7 +34,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     DetailsPage(),
-    MapApp()
+    MapClickPage()
   ];
 
   void _onItemTapped(int index) {

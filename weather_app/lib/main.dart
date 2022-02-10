@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(),
         '/home_empty': (context) => const HomeEmptyPage(),
         '/details': (context) => const DetailsPage(),
-        '/map': (context) => const MapApp()
+        '/map': (context) => const MapClickPage()
       },
     );
   }

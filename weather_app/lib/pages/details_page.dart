@@ -3,11 +3,15 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/model/onecall_response.dart';
 
 import 'package:weather_app/model/weather_response.dart';
 
 import 'package:http/http.dart' as http;
+
+late double? lat = 0;
+late double? lng;
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key}) : super(key: key);
@@ -47,6 +51,57 @@ class _MyHomePageState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (lat == 0) {
+      return Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Colors.black,
+              Colors.cyan.shade900,
+            ],
+          )),
+          child: Scaffold(
+              backgroundColor: Colors.transparent,
+              body: SingleChildScrollView(
+                  child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 100.0, right: 270),
+                    child: Text(
+                      "Feb 3 2022",
+                      style:
+                          TextStyle(color: Colors.grey.shade400, fontSize: 16),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 160.0, left: 20),
+                    child: Text(
+                      "¿Quiere saber si hace buen tiempo para salir a hacer deporte?",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 40, right: 50),
+                    child: Text(
+                      "¡Añade tu ciudad ahora para verlo!",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+                  /**/
+                  )));
+    }
     return Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -369,13 +424,16 @@ class _MyHomePageState extends State<DetailsPage> {
 }
 
 Future<WeatherResponse> fetchLocation() async {
-  final response = await http.get(Uri.parse(
-      'https://api.openweathermap.org/data/2.5/weather?lat=37.3789818&lon=-6.0174968&appid=9f277403fbc997f9a305df9b742acda7'));
-  if (response.statusCode == 200) {
-    return WeatherResponse.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception('Failed to load location');
-  }
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String apiKey = 'cd7594b90e704bf350b33313dd7e6ff2';
+  lat = prefs.getDouble('lat');
+  lng = prefs.getDouble('lng');
+  var url =
+      'https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${apiKey}';
+  var response = await http.get(Uri.parse(url));
+  var jsonData = json.decode(response.body);
+
+  return WeatherResponse.fromJson(jsonData);
 }
 
 Widget _getLocation(WeatherResponse weatherResponse) {
@@ -386,13 +444,15 @@ Widget _getLocation(WeatherResponse weatherResponse) {
 }
 
 Future<OneCallResponse> _fetchWeather() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   String apiKey = 'cd7594b90e704bf350b33313dd7e6ff2';
-  String lat = '37.36826';
-  String lon = '-5.99629';
+  lat = prefs.getDouble('lat');
+  lng = prefs.getDouble('lng');
   var url =
-      'https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&lang=es&units=metric';
+      'https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&appid=${apiKey}&lang=es&units=metric';
   var response = await http.get(Uri.parse(url));
   var jsonData = json.decode(response.body);
+
   return OneCallResponse.fromJson(jsonData);
 }
 
