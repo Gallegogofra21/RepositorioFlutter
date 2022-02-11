@@ -53,16 +53,17 @@ class _MapClickBodyState extends State<_MapClickBody> {
     );
 
     final List<Widget> columnChildren = <Widget>[
-      Padding(
-        padding: const EdgeInsets.only(top: 100.0, right: 10, left: 10),
-        child: Center(
+      
+        
+         Center(
           child: SizedBox(
-            width: 600.0,
-            height: 600.0,
-            child: googleMap,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height - 56,
+            child: googleMap,),
+            
           ),
-        ),
-      ),
+        
+      
     ];
 
     return Container(decoration: BoxDecoration(

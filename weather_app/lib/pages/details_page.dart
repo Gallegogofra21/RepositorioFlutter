@@ -59,7 +59,7 @@ class _MyHomePageState extends State<DetailsPage> {
             end: Alignment.bottomLeft,
             colors: [
               Colors.black,
-              Colors.cyan.shade900,
+                Colors.cyan.shade900,
             ],
           )),
           child: Scaffold(
@@ -109,7 +109,7 @@ class _MyHomePageState extends State<DetailsPage> {
           end: Alignment.bottomLeft,
           colors: [
             Colors.black,
-            Colors.cyan.shade900,
+                Colors.cyan.shade900,
           ],
         )),
         child: Scaffold(
