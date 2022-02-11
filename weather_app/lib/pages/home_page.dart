@@ -113,19 +113,26 @@ class _MyHomePageState extends State<HomePage> {
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(child: Column(
             children: <Widget>[
+
               Padding(
-                  padding: const EdgeInsets.only(right: 300, top: 80.0),
-                  child: FutureBuilder<WeatherResponse>(
-                    future: location,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return _getLocation(snapshot.data!);
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      }
-                      return const CircularProgressIndicator();
-                    },
-                  )),
+                padding: const EdgeInsets.only(left: 15,top: 100.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    FutureBuilder<WeatherResponse>(
+                          future: location,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return _getLocation(snapshot.data!);
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+                            return const CircularProgressIndicator();
+                          },
+                        ),
+                  ],
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(right: 270),
                 child: FutureBuilder<OneCallResponse>(

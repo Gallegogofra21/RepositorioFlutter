@@ -114,20 +114,27 @@ class _MyHomePageState extends State<DetailsPage> {
         )),
         child: Scaffold(
             backgroundColor: Colors.transparent,
-            body: Column(children: <Widget>[
-              Padding(
-                  padding: const EdgeInsets.only(right: 295, top: 80.0),
-                  child: FutureBuilder<WeatherResponse>(
-                    future: location,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return _getLocation(snapshot.data!);
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      }
-                      return const CircularProgressIndicator();
-                    },
-                  )),
+            body: SingleChildScrollView(child: Column(children: <Widget>[
+              
+                Padding(
+                  padding: const EdgeInsets.only(left: 15,top: 100.0),
+                  child: Row(
+                    mainAxisAlignment:  MainAxisAlignment.start,
+                    children: [
+                      FutureBuilder<WeatherResponse>(
+                          future: location,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return _getLocation(snapshot.data!);
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+                            return const CircularProgressIndicator();
+                          },
+                        ),
+                    ],
+                  ),
+                ),
               Padding(
                 padding: const EdgeInsets.only(right: 270),
                 child: FutureBuilder<OneCallResponse>(
@@ -419,7 +426,7 @@ class _MyHomePageState extends State<DetailsPage> {
                   ])
                 ],
               )
-            ])));
+            ]))));
   }
 }
 
@@ -437,10 +444,12 @@ Future<WeatherResponse> fetchLocation() async {
 }
 
 Widget _getLocation(WeatherResponse weatherResponse) {
-  return Text(
+  return Container(
+    width: 200,
+    child: Text(
     weatherResponse.name,
     style: const TextStyle(fontSize: 24, color: Colors.white),
-  );
+  ));
 }
 
 Future<OneCallResponse> _fetchWeather() async {
