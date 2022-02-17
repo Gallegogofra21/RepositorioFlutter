@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
                                     image:
-                                        AssetImage('assets/images/talha.jpeg'),
+                                        AssetImage('assets/images/FotoPerfil.jfif'),
                                     fit: BoxFit.cover)),
                           ),
                           Positioned(
@@ -144,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          post('assets/images/talha.jpeg', "talha.bayrakci"),
+          post('assets/images/Personal1.jfif', "frangallego03"),
           post('assets/images/nergis.jpeg', "Nergis Bırasoglu"),
           post('assets/images/barbara.jpeg', "barbara_palvin"),
           post('assets/images/emir.jpeg', "emirorkcu"),
@@ -229,7 +229,7 @@ Widget post(String image, name) {
       children: <Widget>[
         ListTile(
           leading: const CircleAvatar(
-            backgroundImage: AssetImage('assets/images/kucuk.jpg'),
+            backgroundImage: AssetImage('assets/images/FotoPerfil.jfif'),
           ),
           title: Text(
             name,
