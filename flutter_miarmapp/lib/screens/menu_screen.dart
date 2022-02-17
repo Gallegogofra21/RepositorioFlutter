@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_miarmapp/screens/actions_page.dart';
 import 'package:flutter_miarmapp/screens/home_screen.dart';
 import 'package:flutter_miarmapp/screens/login_screen.dart';
 import 'package:flutter_miarmapp/screens/profile_screen.dart';
@@ -18,7 +19,7 @@ class _MenuScreenState extends State<MenuScreen> {
     const HomeScreen(),
     const SearchScreen(),
     const LoginScreen(),
-    Text("In Progress"),
+    const ActionsPage(),
     const ProfileScreen(),
     
     
