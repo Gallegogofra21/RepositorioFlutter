@@ -79,7 +79,7 @@ class _MenuScreenState extends State<MenuScreen> {
               },
             ),
             GestureDetector(
-              child: Icon(Icons.shopping_bag,
+              child: Icon(Icons.favorite,
                   color: _currentIndex == 3
                       ? Colors.black
                       : const Color(0xff999999)),
@@ -101,7 +101,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
                   child: Image.asset(
-                      'assets/images/avatar.jpeg',
+                      'assets/images/FotoPerfil.jfif',
                       width: 30,
                     ),
                 ),

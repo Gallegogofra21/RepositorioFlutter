@@ -58,8 +58,11 @@ class _LoginScreenState extends State<LoginScreen> {
             child: ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
+                  Navigator.pushNamed(context, '/');
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Processing Data')));
+                }else {
+                  
                 }
               },
               child: const Text('Iniciar sesión'),
