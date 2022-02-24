@@ -4,6 +4,7 @@ import 'package:flutter_miarmapp/screens/home_screen.dart';
 import 'package:flutter_miarmapp/screens/login_screen.dart';
 import 'package:flutter_miarmapp/screens/profile_screen.dart';
 import 'package:flutter_miarmapp/screens/search_screen.dart';
+import 'package:flutter_miarmapp/ui/posts_screen.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class _MenuScreenState extends State<MenuScreen> {
   int _currentIndex = 0;
 
   List<Widget> pages = [
-    const HomeScreen(),
+    const PostsScreen(),
     const SearchScreen(),
     const LoginScreen(),
     const ActionsPage(),

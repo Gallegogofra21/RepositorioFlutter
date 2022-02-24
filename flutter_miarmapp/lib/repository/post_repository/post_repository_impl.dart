@@ -9,7 +9,7 @@ class PostRepositoryImpl extends PostRepository {
 
   @override
   Future<List<Content>> fetchPosts (String type) async {
-    final response = await _client.get(Uri.parse('localhost:8080/post/public'));
+    final response = await _client.get(Uri.parse('http://localhost:8080/post/public'));
     if (response.statusCode == 200) {
       return PostResponse.fromJson(json.decode(response.body)).content;
     } else {
