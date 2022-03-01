@@ -159,7 +159,7 @@ Widget story(String image, name) {
               placeholder: (context, url) => const Center(
                 child: CircularProgressIndicator(),
               ),
-              imageUrl: 'https://image.tmdb.org/t/p/w500${post.contenidoOriginal}',
+              imageUrl: post.contenidoOriginal,
               width: width,
               height: double.infinity,
               fit: BoxFit.cover,

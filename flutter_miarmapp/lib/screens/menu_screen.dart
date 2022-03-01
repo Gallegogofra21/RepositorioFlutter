@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_miarmapp/screens/actions_page.dart';
 import 'package:flutter_miarmapp/screens/home_screen.dart';
 import 'package:flutter_miarmapp/screens/login_screen.dart';
+import 'package:flutter_miarmapp/screens/login_screen.dart';
 import 'package:flutter_miarmapp/screens/profile_screen.dart';
 import 'package:flutter_miarmapp/screens/search_screen.dart';
 import 'package:flutter_miarmapp/ui/posts_screen.dart';
