@@ -1,4 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_miarmapp/bloc/posts_bloc/posts_bloc.dart';
+import 'package:flutter_miarmapp/bloc/posts_bloc/posts_event.dart';
+import 'package:flutter_miarmapp/bloc/posts_bloc/posts_state.dart';
+import 'package:flutter_miarmapp/models/post.dart';
+import 'package:flutter_miarmapp/repository/consts.dart';
+import 'package:flutter_miarmapp/repository/post_repository/post_repository.dart';
+import 'package:flutter_miarmapp/repository/post_repository/post_repository_impl.dart';
+import 'package:flutter_miarmapp/ui/widgets/error_page.dart';
 import 'package:flutter_miarmapp/widgets/home_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -9,9 +19,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late PostRepository postRepository;
+  
+  @override
+  void initState() {
+    super.initState();
+    postRepository = PostRepositoryImpl();
+  }
+
+  @override 
+  void dispose() {
+    super.dispose();
+  }
+  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocProvider(create: (context) { return PostsBloc(postRepository)..add(FetchPostWithType(Constant.public)); },
+    child: Scaffold(body: _createPublic(context),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: IconButton(
@@ -51,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: ListView(
+      /*body: ListView(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
@@ -150,9 +174,9 @@ class _HomeScreenState extends State<HomeScreen> {
           post('assets/images/emir.jpeg', "emirorkcu"),
           post('assets/images/mert.jpeg', "yomralioglumert"),
         ],
-      ),
+      ),*/
       
-    );
+    ));
   }
 }
 
@@ -188,7 +212,11 @@ Widget story(String image, name) {
   );
 }
 
-Widget post(String image, name) {
+Widget post(BuildContext context, Content post) {
+
+String file = post.contenidoOriginal.replaceAll('localhost:8080', '10.0.2.2:8080');
+
+
   return Container(
     decoration: BoxDecoration(
         color: Colors.white,
@@ -201,7 +229,7 @@ Widget post(String image, name) {
             backgroundImage: AssetImage('assets/images/FotoPerfil.jfif'),
           ),
           title: Text(
-            name,
+            "fdkafja",
             style: TextStyle(
                 color: Colors.black.withOpacity(.8),
                 fontWeight: FontWeight.w400,
@@ -209,11 +237,8 @@ Widget post(String image, name) {
           ),
           trailing: const Icon(Icons.more_vert),
         ),
-        Image.asset(
-          image,
-          fit: BoxFit.cover,
-          width: double.infinity,
-        ),
+        Image.network('${file}')
+        ,
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -246,4 +271,94 @@ Widget post(String image, name) {
       ],
     ),
   );
+  }
+
+
+  Widget _createPublic (BuildContext context) {
+    return BlocBuilder<PostsBloc, PostsState>(
+      builder: (context, state) {
+        if(state is PostsInitial){
+        return const Center(child: CircularProgressIndicator()); 
+      } else if(state is PostFetchError){
+        return ErrorPage(
+          mensaje: state.mensaje,
+          retry: () {
+            context.watch<PostsBloc>().add(FetchPostWithType('publicos'));
+          },
+        );
+      }else if(state is PostsFetched) {
+        return _createPublicView(context, state.posts);
+      }else {
+        return const Text('Not support');
+      }
+      }
+    );
+  }
+
+  Widget _createPublicView(BuildContext context, List<Content> posts) {
+    final contentHeight = 4.0 * (MediaQuery.of(context).size.width / 2.4) / 3;
+    return Column(
+      children: [
+        Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.only(left: 20.0, right: 16),
+          height: 48.0,
+          child: Row(
+            children: const [
+              Expanded(flex: 1,
+              child: Text(
+                'Public',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 16.0,
+                  fontFamily: 'Muli',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),),
+              const Icon(Icons.arrow_forward, color: Colors.red),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: contentHeight,
+          child: ListView.separated(
+            itemBuilder: (BuildContext context, int index) {
+              return _createPublicViewItem(context, posts[index]);
+            },
+            padding: const EdgeInsets.only(left: 16, right: 16),
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (context, index) => const VerticalDivider(
+              color: Colors.transparent,
+              width: 6.0,
+            ),
+            itemCount: posts.length,
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _createPublicViewItem(BuildContext context, Content post) {
+    String file = post.contenidoOriginal.replaceAll('localhost:8080', '10.0.2.2:8080');
+    final width = MediaQuery.of(context).size.width / 2.6;
+    return Container(
+      width: width,
+      height: double.infinity,
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: Card(
+        elevation: 10.0,
+        borderOnForeground: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: SizedBox(
+          width: width,
+          height: double.infinity,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child: Image.network('${file}')
+          ),
+        ),
+      ),
+    );
   }

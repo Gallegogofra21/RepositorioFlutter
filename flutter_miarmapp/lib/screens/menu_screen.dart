@@ -5,7 +5,6 @@ import 'package:flutter_miarmapp/screens/login_screen.dart';
 import 'package:flutter_miarmapp/screens/login_screen.dart';
 import 'package:flutter_miarmapp/screens/profile_screen.dart';
 import 'package:flutter_miarmapp/screens/search_screen.dart';
-import 'package:flutter_miarmapp/ui/posts_screen.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -18,13 +17,10 @@ class _MenuScreenState extends State<MenuScreen> {
   int _currentIndex = 0;
 
   List<Widget> pages = [
-    const PostsScreen(),
+    const HomeScreen(),
     const SearchScreen(),
-    const LoginScreen(),
     const ActionsPage(),
     const ProfileScreen(),
-    
-    
   ];
 
   @override
@@ -66,17 +62,6 @@ class _MenuScreenState extends State<MenuScreen> {
               onTap: () {
                 setState(() {
                   _currentIndex = 1;
-                });
-              },
-            ),
-            GestureDetector(
-              child: Icon(Icons.ondemand_video,
-                  color: _currentIndex == 2
-                      ? Colors.black
-                      : const Color(0xff999999)),
-              onTap: () {
-                setState(() {
-                  _currentIndex = 2;
                 });
               },
             ),
