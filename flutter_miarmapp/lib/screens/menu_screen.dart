@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_miarmapp/screens/actions_page.dart';
 import 'package:flutter_miarmapp/screens/home_screen.dart';
-import 'package:flutter_miarmapp/screens/login_screen.dart';
-import 'package:flutter_miarmapp/screens/login_screen.dart';
 import 'package:flutter_miarmapp/screens/profile_screen.dart';
 import 'package:flutter_miarmapp/screens/search_screen.dart';
 
@@ -31,14 +29,14 @@ class _MenuScreenState extends State<MenuScreen> {
 
   Widget _buildBottomBar() {
     return Container(
-        decoration: BoxDecoration(
-            border: const Border(
+        decoration: const BoxDecoration(
+            border: Border(
           top: BorderSide(
             color: Color(0xfff1f1f1),
             width: 1.0,
           ),
         )),
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         height: 70,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,19 +65,19 @@ class _MenuScreenState extends State<MenuScreen> {
             ),
             GestureDetector(
               child: Icon(Icons.favorite,
-                  color: _currentIndex == 3
+                  color: _currentIndex == 2
                       ? Colors.black
                       : const Color(0xff999999)),
               onTap: () {
                 setState(() {
-                  _currentIndex = 3;
+                  _currentIndex = 2;
                 });
               },
             ),
             GestureDetector(
               onTap: () {
                 setState(() {
-                  _currentIndex = 4;
+                  _currentIndex = 3;
                 });
               },
               child: Container(

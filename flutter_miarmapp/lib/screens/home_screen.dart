@@ -12,7 +12,7 @@ import 'package:flutter_miarmapp/ui/widgets/error_page.dart';
 import 'package:flutter_miarmapp/widgets/home_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({ Key? key }) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -20,62 +20,67 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late PostRepository postRepository;
-  
+
   @override
   void initState() {
     super.initState();
     postRepository = PostRepositoryImpl();
   }
 
-  @override 
+  @override
   void dispose() {
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (context) { return PostsBloc(postRepository)..add(FetchPostWithType(Constant.public)); },
-    child: Scaffold(body: _createPublic(context),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.camera_alt,
-            size: 20,
-            color: Colors.black,
-          ),
-          onPressed: () {},
-        ),
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: const Text(
-          "Instagram",
-          style:
-              TextStyle(fontFamily: "Genel", fontSize: 30, color: Colors.black),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.live_tv,
-              size: 20,
-              color: Colors.black,
+    return BlocProvider(
+        create: (context) {
+          return PostsBloc(postRepository)
+            ..add(FetchPostWithType(Constant.public));
+        },
+        child: Scaffold(
+          body: _createPublic(context),
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.camera_alt,
+                size: 20,
+                color: Colors.black,
+              ),
+              onPressed: () {},
             ),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.send,
-              size: 20,
-              color: Colors.black,
+            backgroundColor: Colors.white,
+            centerTitle: true,
+            title: const Text(
+              "Instagram",
+              style: TextStyle(
+                  fontFamily: "Genel", fontSize: 30, color: Colors.black),
             ),
-            onPressed: () {
-              /*Navigator.of(context).push(
+            actions: <Widget>[
+              IconButton(
+                icon: const Icon(
+                  Icons.live_tv,
+                  size: 20,
+                  color: Colors.black,
+                ),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: const Icon(
+                  Icons.send,
+                  size: 20,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  /*Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => const ChatPage()));*/
-            },
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-      /*body: ListView(
+          /*body: ListView(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
@@ -175,8 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
           post('assets/images/mert.jpeg', "yomralioglumert"),
         ],
       ),*/
-      
-    ));
+        ));
   }
 }
 
@@ -213,9 +217,8 @@ Widget story(String image, name) {
 }
 
 Widget post(BuildContext context, Content post) {
-
-String file = post.contenidoOriginal.replaceAll('localhost:8080', '10.0.2.2:8080');
-
+  String file =
+      post.contenidoOriginal.replaceAll('localhost:8080', '10.0.2.2:8080');
 
   return Container(
     decoration: BoxDecoration(
@@ -237,8 +240,7 @@ String file = post.contenidoOriginal.replaceAll('localhost:8080', '10.0.2.2:8080
           ),
           trailing: const Icon(Icons.more_vert),
         ),
-        Image.network('${file}')
-        ,
+        Image.network('${file}'),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -271,94 +273,105 @@ String file = post.contenidoOriginal.replaceAll('localhost:8080', '10.0.2.2:8080
       ],
     ),
   );
-  }
+}
 
+Widget _createPublic(BuildContext context) {
+  return BlocBuilder<PostsBloc, PostsState>(builder: (context, state) {
+    if (state is PostsInitial) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (state is PostFetchError) {
+      return ErrorPage(
+        mensaje: state.mensaje,
+        retry: () {
+          context.watch<PostsBloc>().add(FetchPostWithType('publicos'));
+        },
+      );
+    } else if (state is PostsFetched) {
+      return _createPublicView(context, state.posts);
+    } else {
+      return const Text('Not support');
+    }
+  });
+}
 
-  Widget _createPublic (BuildContext context) {
-    return BlocBuilder<PostsBloc, PostsState>(
-      builder: (context, state) {
-        if(state is PostsInitial){
-        return const Center(child: CircularProgressIndicator()); 
-      } else if(state is PostFetchError){
-        return ErrorPage(
-          mensaje: state.mensaje,
-          retry: () {
-            context.watch<PostsBloc>().add(FetchPostWithType('publicos'));
+Widget _createPublicView(BuildContext context, List<Content> posts) {
+  final contentHeight = 4.0 * (MediaQuery.of(context).size.width / 2.4) / 3;
+  return Column(
+    children: [
+      SizedBox(
+        height: 600,
+        child: ListView.separated(
+          itemBuilder: (BuildContext context, int index) {
+            return _createPublicViewItem(context, posts[index]);
           },
-        );
-      }else if(state is PostsFetched) {
-        return _createPublicView(context, state.posts);
-      }else {
-        return const Text('Not support');
-      }
-      }
-    );
-  }
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          separatorBuilder: (context, index) => const VerticalDivider(
+            color: Colors.transparent,
+            width: 6.0,
+          ),
+          itemCount: posts.length,
+        ),
+      )
+    ],
+  );
+}
 
-  Widget _createPublicView(BuildContext context, List<Content> posts) {
-    final contentHeight = 4.0 * (MediaQuery.of(context).size.width / 2.4) / 3;
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.only(left: 20.0, right: 16),
-          height: 48.0,
+Widget _createPublicViewItem(BuildContext context, Content post) {
+  String file =
+      post.contenidoOriginal.replaceAll('localhost:8080', '10.0.2.2:8080');
+  final width = MediaQuery.of(context).size.width / 2.6;
+  return 
+  Container(
+    decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Colors.grey.withOpacity(.3)))),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        /*ListTile(
+          leading: const CircleAvatar(
+            backgroundImage: AssetImage('assets/images/kucuk.jpg'),
+          ),
+          title: Text(
+            name,
+            style: TextStyle(
+                color: Colors.black.withOpacity(.8),
+                fontWeight: FontWeight.w400,
+                fontSize: 21),
+          ),
+          trailing: const Icon(Icons.more_vert),
+        ),*/
+        Image.network(file, fit:BoxFit.cover,height: 200,),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Row(
-            children: const [
-              Expanded(flex: 1,
-              child: Text(
-                'Public',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 16.0,
-                  fontFamily: 'Muli',
-                  fontWeight: FontWeight.bold,
-                ),
-              ),),
-              const Icon(Icons.arrow_forward, color: Colors.red),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                children: const <Widget>[
+                  Icon(Icons.favorite_border, size: 31),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Icon(Icons.comment_sharp, size: 31),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Icon(Icons.send, size: 31),
+                ],
+              ),
+              const Icon(Icons.bookmark_border, size: 31)
             ],
           ),
         ),
-        SizedBox(
-          height: contentHeight,
-          child: ListView.separated(
-            itemBuilder: (BuildContext context, int index) {
-              return _createPublicViewItem(context, posts[index]);
-            },
-            padding: const EdgeInsets.only(left: 16, right: 16),
-            scrollDirection: Axis.horizontal,
-            separatorBuilder: (context, index) => const VerticalDivider(
-              color: Colors.transparent,
-              width: 6.0,
-            ),
-            itemCount: posts.length,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+          child: Text(
+            'liked by you and 385 others',
+            style: TextStyle(fontSize: 16, color: Colors.black.withOpacity(.8)),
           ),
         )
       ],
-    );
-  }
-
-  Widget _createPublicViewItem(BuildContext context, Content post) {
-    String file = post.contenidoOriginal.replaceAll('localhost:8080', '10.0.2.2:8080');
-    final width = MediaQuery.of(context).size.width / 2.6;
-    return Container(
-      width: width,
-      height: double.infinity,
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: Card(
-        elevation: 10.0,
-        borderOnForeground: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: SizedBox(
-          width: width,
-          height: double.infinity,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.network('${file}')
-          ),
-        ),
-      ),
-    );
-  }
+    ),
+  );
+}

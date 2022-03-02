@@ -149,7 +149,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       email: emailController.text,
                       password: passwordController.text);
                   BlocProvider.of<LoginBloc>(context).add(DoLoginEvent(loginDto));
-                  Navigator.pushNamed(context, '/');
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Processing Data')));
                 }
               },
