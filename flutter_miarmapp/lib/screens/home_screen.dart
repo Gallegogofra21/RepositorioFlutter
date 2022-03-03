@@ -4,12 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_miarmapp/bloc/posts_bloc/posts_bloc.dart';
 import 'package:flutter_miarmapp/bloc/posts_bloc/posts_event.dart';
 import 'package:flutter_miarmapp/bloc/posts_bloc/posts_state.dart';
+import 'package:flutter_miarmapp/models/auth/login_response.dart';
 import 'package:flutter_miarmapp/models/post.dart';
 import 'package:flutter_miarmapp/repository/consts.dart';
 import 'package:flutter_miarmapp/repository/post_repository/post_repository.dart';
 import 'package:flutter_miarmapp/repository/post_repository/post_repository_impl.dart';
 import 'package:flutter_miarmapp/ui/widgets/error_page.dart';
 import 'package:flutter_miarmapp/widgets/home_app_bar.dart';
+import 'package:insta_like_button/insta_like_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -80,106 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          /*body: ListView(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'Stories',
-                  style: TextStyle(
-                      color: Colors.black.withOpacity(.8),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 19),
-                ),
-                Row(
-                  children: <Widget>[
-                    const Icon(
-                      Icons.arrow_right,
-                      size: 43,
-                    ),
-                    Text(
-                      'Watch All',
-                      style: TextStyle(
-                          color: Colors.black.withOpacity(.8),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 19),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 15),
-            height: 122,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 12),
-                  child: Column(
-                    children: <Widget>[
-                      Stack(
-                        children: <Widget>[
-                          Container(
-                            width: 75,
-                            height: 75,
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    image:
-                                        AssetImage('assets/images/FotoPerfil.jfif'),
-                                    fit: BoxFit.cover)),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: -1,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(color: Colors.white)),
-                              child: const Icon(Icons.add, color: Colors.white),
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        'My Story',
-                        style: TextStyle(
-                            color: Colors.black.withOpacity(.8),
-                            fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  ),
-                ),
-                story(
-                  'assets/images/nergis.jpeg',
-                  'Nergis Bırasoglu',
-                ),
-                story(
-                  'assets/images/barbara.jpeg',
-                  'Barbara Palvin',
-                ),
-                story('assets/images/emir.jpeg', 'Emir'),
-                story('assets/images/apo.jpeg', 'Abdullah'),
-                story('assets/images/mert.jpeg', 'Mert'),
-              ],
-            ),
-          ),
-          post('assets/images/Personal1.jfif', "frangallego03"),
-          post('assets/images/nergis.jpeg', "Macarena Diaz"),
-          post('assets/images/barbara.jpeg', "Martina Perez"),
-          post('assets/images/emir.jpeg', "emirorkcu"),
-          post('assets/images/mert.jpeg', "yomralioglumert"),
-        ],
-      ),*/
+          
         ));
   }
 }
@@ -216,64 +119,6 @@ Widget story(String image, name) {
   );
 }
 
-Widget post(BuildContext context, Content post) {
-  String file =
-      post.contenidoOriginal.replaceAll('localhost:8080', '10.0.2.2:8080');
-
-  return Container(
-    decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.withOpacity(.3)))),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        ListTile(
-          leading: const CircleAvatar(
-            backgroundImage: AssetImage('assets/images/FotoPerfil.jfif'),
-          ),
-          title: Text(
-            "fdkafja",
-            style: TextStyle(
-                color: Colors.black.withOpacity(.8),
-                fontWeight: FontWeight.w400,
-                fontSize: 21),
-          ),
-          trailing: const Icon(Icons.more_vert),
-        ),
-        Image.network('${file}'),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children: const <Widget>[
-                  Icon(Icons.favorite_border, size: 31),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Icon(Icons.comment_sharp, size: 31),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Icon(Icons.send, size: 31),
-                ],
-              ),
-              const Icon(Icons.bookmark_border, size: 31)
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-          child: Text(
-            'liked by you and 385 others',
-            style: TextStyle(fontSize: 16, color: Colors.black.withOpacity(.8)),
-          ),
-        )
-      ],
-    ),
-  );
-}
 
 Widget _createPublic(BuildContext context) {
   return BlocBuilder<PostsBloc, PostsState>(builder: (context, state) {
@@ -299,7 +144,7 @@ Widget _createPublicView(BuildContext context, List<Content> posts) {
   return Column(
     children: [
       SizedBox(
-        height: 600,
+        height: 590,
         child: ListView.separated(
           itemBuilder: (BuildContext context, int index) {
             return _createPublicViewItem(context, posts[index]);
@@ -319,29 +164,34 @@ Widget _createPublicView(BuildContext context, List<Content> posts) {
 Widget _createPublicViewItem(BuildContext context, Content post) {
   String file =
       post.contenidoOriginal.replaceAll('localhost:8080', '10.0.2.2:8080');
-  final width = MediaQuery.of(context).size.width / 2.6;
-  return 
-  Container(
+
+  String avatar = post.userAvatar.replaceAll('localhost:8080', '10.0.2.2:8080');
+
+  return Container(
     decoration: BoxDecoration(
         color: Colors.white,
         border: Border(top: BorderSide(color: Colors.grey.withOpacity(.3)))),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        /*ListTile(
-          leading: const CircleAvatar(
-            backgroundImage: AssetImage('assets/images/kucuk.jpg'),
+        ListTile(
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(avatar),
           ),
           title: Text(
-            name,
+            post.user,
             style: TextStyle(
                 color: Colors.black.withOpacity(.8),
                 fontWeight: FontWeight.w400,
                 fontSize: 21),
           ),
           trailing: const Icon(Icons.more_vert),
-        ),*/
-        Image.network(file, fit:BoxFit.cover,height: 200,),
+        ),
+        Image.network(
+          file,
+          fit: BoxFit.cover,
+          height: 200,
+        ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
