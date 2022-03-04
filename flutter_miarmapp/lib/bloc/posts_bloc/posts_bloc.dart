@@ -2,8 +2,6 @@ import 'package:flutter_miarmapp/bloc/posts_bloc/posts_event.dart';
 import 'package:flutter_miarmapp/bloc/posts_bloc/posts_state.dart';
 import 'package:flutter_miarmapp/repository/post_repository/post_repository.dart';
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'dart:async';
 
 class PostsBloc extends Bloc<PostsEvent, PostsState> {
   final PostRepository postRepository;

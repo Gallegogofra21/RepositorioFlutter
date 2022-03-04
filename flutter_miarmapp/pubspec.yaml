@@ -47,6 +47,9 @@ dependencies:
   cached_network_image: ^3.2.0
   shared_preferences: ^2.0.13
   insta_like_button: ^0.1.1
+  image_picker: ^0.8.4+10
+  date_field: ^2.1.3
+  file_picker: ^4.5.0
 
 dev_dependencies:
   flutter_test:

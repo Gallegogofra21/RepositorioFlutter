@@ -14,7 +14,7 @@ class User {
   late final String id;
   late final String username;
   late final String email;
-  late final String telefono;
+  late final dynamic telefono;
   late final String avatar;
   late final String perfil;
   late final String fecha;

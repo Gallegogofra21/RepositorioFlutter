@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
             actions: <Widget>[
               IconButton(
                 icon: const Icon(
-                  Icons.live_tv,
+                  Icons.add_box_outlined,
                   size: 20,
                   color: Colors.black,
                 ),
@@ -76,8 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.black,
                 ),
                 onPressed: () {
-                  /*Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const ChatPage()));*/
                 },
               ),
             ],

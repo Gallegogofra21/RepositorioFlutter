@@ -24,14 +24,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+   
     userRepository = UserRepositoryImpl();
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    
     super.dispose();
   }
 
@@ -123,7 +123,7 @@ Widget _profile(BuildContext context, User user) {
                               onPressed: null,
                               child: Text(
                                 user.posts.length.toString(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black),
                               ),
@@ -138,19 +138,15 @@ Widget _profile(BuildContext context, User user) {
                           children: [
                             TextButton(
                               onPressed: () {
-                                /*Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const FollowPage()));*/
                               },
                               child: Text(
                                 user.followers.length.toString(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black),
                               ),
                             ),
-                            Text(
+                            const Text(
                               "followers",
                             ),
                           ],
@@ -163,16 +159,12 @@ Widget _profile(BuildContext context, User user) {
                           children: [
                             TextButton(
                                 onPressed: () {
-                                  /*Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const FollowPage()));*/
                                 },
-                                child: Text("832",
+                                child: const Text("832",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black))),
-                            Text("following"),
+                            const Text("following"),
                           ],
                         ),
                       ],
@@ -185,7 +177,7 @@ Widget _profile(BuildContext context, User user) {
             Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 8.0),
+                  padding: const EdgeInsets.only(left: 8.0),
                   child: Text(user.username.toString()),
                 ),
               ],
@@ -193,10 +185,10 @@ Widget _profile(BuildContext context, User user) {
             Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 8.0),
+                  padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
                     user.username,
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 )
               ],
@@ -215,21 +207,6 @@ Widget _profile(BuildContext context, User user) {
                       style: TextStyle(color: Colors.black),
                     )))
 
-            /* Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 120.0),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.white),
-                        onPressed: () {},
-                        child: const Text(
-                          "Edit Profile",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),*/
           ],
         ),
         const Divider(
@@ -251,9 +228,7 @@ Widget _profile(BuildContext context, User user) {
               width: 20,
             ),
             
-            /*Image(  image: NetworkImage(user.publicaciones.elementAt(0).file.toString().replaceFirst('localhost', '10.0.2.2')),
-                        
-                        ),*/
+            
             Flexible(
               child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -270,13 +245,7 @@ Widget _profile(BuildContext context, User user) {
                     
                   }),
             ),
-            /*Container(
-                width: 120,
-                height: 150,
-                child: Image(
-                  image: AssetImage('assets/images/luismi.png'),
-                  fit: BoxFit.contain,
-                )),*/
+            
             const SizedBox(
               width: 20,
             ),

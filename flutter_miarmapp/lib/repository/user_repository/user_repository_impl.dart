@@ -8,26 +8,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserRepositoryImpl extends UserRepository {
   final Client _client = Client();
 
-/*List<PublicacionData> myModels;
-var response = await http.get("myUrl");
-
-myModels=(json.decode(response.body) as List).map((i) =>
-              MyModel.fromJson(i)).toList();*/
-
   @override
   Future<User> fetchUsers(String type) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    
+
     final response = await _client.get(Uri.parse('http://10.0.2.2:8080/me'),
-     headers: {
-       'Authorization':
-            'Bearer ${prefs.getString('token')}'});
+        headers: {'Authorization': 'Bearer ${prefs.getString('token')}'});
     if (response.statusCode == 200) {
-      return User.fromJson(json.decode(response.body)); 
+      return User.fromJson(json.decode(response.body));
     } else {
       throw Exception('Fail to load users');
     }
   }
-
-
 }
